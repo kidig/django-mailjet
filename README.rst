@@ -5,7 +5,7 @@ A Django email backend for use with Mailjet
 
 Overview
 ========
-Django-Mailjet is a drop-in mail backend for Django_.
+Django-Mailjet is a drop-in mail backend for Django.
 
 Getting going
 =============
@@ -30,4 +30,4 @@ You must ensure what you send is appropriate.
 
 Django Email Backend Reference
 ================================
-* http://docs.djangoproject.com/en/dev/topics/email/#e-mail-backends
+* https://docs.djangoproject.com/en/dev/topics/email/#email-backends
