@@ -35,7 +35,7 @@ setup(
     url='http://github.com/kidig/django-mailjet/',
     license='MIT',
     packages=['django_mailjet'],
-    install_requires=["mailjet_rest>=1.1.1", "django>=1.8"],
+    install_requires=["mailjet_rest>=v1.1.1", "django>=1.8"],
     include_package_data=True,
     tests_require=["mock", "six"],
     test_suite="runtests.runtests",
