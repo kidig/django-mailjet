@@ -54,7 +54,7 @@ class MailjetBackend(BaseEmailBackend):
         recipient_vars = getattr(message, 'recipient_vars', {})
 
         for addr in recipients:
-            to_email, to_name = parseaddr(sanitize_address(addr, message.encoding=))
+            to_email, to_name = parseaddr(sanitize_address(addr, message.encoding))
             rcpt = {'Email': to_email, 'Name': to_name}
 
             if recipient_vars.get(addr):
