@@ -1,25 +1,20 @@
+
 import mimetypes
 from base64 import b64encode
 from email.mime.base import MIMEBase
 from email.utils import parseaddr
 from mailjet_rest import Client
 
+
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.mail.message import sanitize_address, DEFAULT_ATTACHMENT_MIME_TYPE
 
+from .exceptions import MailjetError, MailjetAPIError
 
 __version__ = '0.1.0'
 version = __version__
-
-
-class MailjetError(Exception):
-    pass
-
-
-class MailjetAPIError(Exception):
-    pass
 
 
 class MailjetBackend(BaseEmailBackend):
@@ -37,14 +32,10 @@ class MailjetBackend(BaseEmailBackend):
             if not fail_silently:
                 raise ImproperlyConfigured("Please set MAILJET_API_KEY and MAILJET_API_SECRET in settings.py to use Mailjet")
 
-        self.client = None
+        self.client = Client(auth=(self._api_key, self._api_secret))
 
     def open(self):
-        if self.client:
-            return False
-
-        self.client = Client(auth=(self._api_key, self._api_secret))
-        return True
+        pass
 
     def close(self):
         pass
@@ -118,7 +109,8 @@ class MailjetBackend(BaseEmailBackend):
         msg_dict['FromEmail'] = from_email
         msg_dict['FromName'] = from_name
 
-        msg_dict['To'] = message.to
+        # msg_dict['To'] = message.to
+        msg_dict['Recipients'] = self._parse_recipients(message, message.to)
 
         if hasattr(message, 'cc'):
             msg_dict['Cc'] = message.cc

@@ -36,5 +36,8 @@ setup(
     license='MIT',
     packages=['django_mailjet'],
     install_requires=["mailjet_rest>=1.1.1", "django>=1.8"],
+    include_package_data=True,
+    tests_require=["mock", "six"],
+    test_suite="runtests.runtests",
     zip_safe=False,
 )
