@@ -13,9 +13,6 @@ from django.core.mail.message import sanitize_address, DEFAULT_ATTACHMENT_MIME_T
 
 from .exceptions import MailjetError, MailjetAPIError
 
-__version__ = '0.1.0'
-version = __version__
-
 
 class MailjetBackend(BaseEmailBackend):
     """

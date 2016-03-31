@@ -1,6 +1,6 @@
 from setuptools import setup
 
-version = '0.1.0'
+version = '0.1.1'
 
 DESCRIPTION = "A Django email backend for Mailjet"
 
