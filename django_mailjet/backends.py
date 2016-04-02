@@ -129,6 +129,8 @@ class MailjetBackend(BaseEmailBackend):
         mailjet_attrs = {
             'template_id': 'Mj-TemplateID',
             'template_language': 'Mj-TemplateLanguage',
+            'template_error_reporting': 'Mj-TemplateErrorReporting',
+            'template_error_deliver': 'Mj-TemplateErrorDeliver',
             'campaign': 'Mj-Campaign',
             'deduplicate_campaign': 'Mj-deduplicatecampaign',
             'track_open': 'Mj-trackopen',
@@ -140,8 +142,8 @@ class MailjetBackend(BaseEmailBackend):
             if hasattr(message, attr):
                 msg_dict[mj_attr] = getattr(message, attr)
 
-        if hasattr(message, 'custom_vars'):
-            msg_dict['Vars'] = message.custom_vars
+        if hasattr(message, 'template_vars'):
+            msg_dict['Vars'] = message.template_vars
 
     def _add_alternatives(self, message, msg_dict):
         for alt in message.alternatives:
