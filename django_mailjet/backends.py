@@ -95,10 +95,13 @@ class MailjetBackend(BaseEmailBackend):
                 email_message=message, payload=payload, response=response)
 
     def _build_standart_message_dict(self, message):
-        msg_dict = {
-            'Subject': message.subject,
-            'Text-part': message.body,
-        }
+        msg_dict = dict()
+
+        if len(message.subject):
+            msg_dict['Subject'] = message.subject
+
+        if len(message.body):
+            msg_dict['Text-part'] = message.body
 
         sender = sanitize_address(message.from_email, message.encoding)
         from_name, from_email = parseaddr(sender)
@@ -136,6 +139,7 @@ class MailjetBackend(BaseEmailBackend):
             'track_open': 'Mj-trackopen',
             'track_click': 'Mj-trackclick',
             'custom_id': 'Mj-CustomID',
+            'event_payload': 'Mj-EventPayLoad',
         }
 
         for attr, mj_attr in mailjet_attrs.items():
