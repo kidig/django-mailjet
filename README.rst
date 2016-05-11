@@ -9,8 +9,8 @@ Django-Mailjet is a drop-in mail backend for Django.
 
 Getting going
 =============
-Install django-mailjet::
-    pip install django-mailjet
+Install django-mailjet:
+    ``pip install django-mailjet``
 Add the following to your ``settings.py``::
 
     EMAIL_BACKEND = 'django_mailjet.backends.MailjetBackend'
