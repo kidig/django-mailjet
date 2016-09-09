@@ -3,7 +3,7 @@ import mimetypes
 from base64 import b64encode
 from email.mime.base import MIMEBase
 from email.utils import parseaddr
-from mailjet import Client
+from mailjet_rest import Client
 
 
 from django.conf import settings
