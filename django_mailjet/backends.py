@@ -43,7 +43,11 @@ class MailjetBackend(BaseEmailBackend):
 
         for addr in recipients:
             to_email, to_name = parseaddr(sanitize_address(addr, message.encoding))
-            rcpt = {'Email': to_email, 'Name': to_name}
+            if to_email and to_name:
+                rcpt = {'Email': to_email, 'Name': to_name}
+            else:
+                # if `addr` is just an email address, `to_email` is an empty string and `to_name` contains the actaul value.
+                rcpt = {'Email': to_name}
 
             if recipient_vars.get(addr):
                 rcpt['Vars'] = recipient_vars.get(addr)
