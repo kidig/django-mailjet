@@ -5,7 +5,7 @@ from setuptools import setup
 
 def read(*parts):
     filename = path.join(path.dirname(__file__), *parts)
-    with open(filename, encoding='utf-8') as fp:
+    with open(filename) as fp:
         return fp.read()
 
 
