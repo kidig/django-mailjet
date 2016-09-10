@@ -109,16 +109,15 @@ class MailjetBackend(BaseEmailBackend):
         msg_dict['FromEmail'] = from_email
         msg_dict['FromName'] = from_name
 
-        # msg_dict['To'] = message.to
-        msg_dict['Recipients'] = self._parse_recipients(message, message.to)
+        msg_dict['To'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.to])
 
-        if hasattr(message, 'cc'):
-            msg_dict['Cc'] = message.cc
+        if message.cc:
+            msg_dict['Cc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.cc])
 
-        if hasattr(message, 'bcc'):
-            msg_dict['bcc'] = message.bcc
+        if message.bcc:
+            msg_dict['Bcc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.bcc])
 
-        if hasattr(message, 'reply_to'):
+        if message.reply_to:
             reply_to = [sanitize_address(addr, message.encoding) for addr in message.reply_to]
             msg_dict['Headers'] = {'Reply-To': ', '.join(reply_to)}
 
