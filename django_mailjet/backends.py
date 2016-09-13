@@ -3,7 +3,7 @@ import mimetypes
 from base64 import b64encode
 from email.mime.base import MIMEBase
 from email.utils import parseaddr
-from mailjet import Client
+from mailjet_rest import Client
 
 
 from django.conf import settings
@@ -42,7 +42,7 @@ class MailjetBackend(BaseEmailBackend):
         recipient_vars = getattr(message, 'recipient_vars', {})
 
         for addr in recipients:
-            to_email, to_name = parseaddr(sanitize_address(addr, message.encoding))
+            to_name, to_email = parseaddr(sanitize_address(addr, message.encoding))
             rcpt = {'Email': to_email, 'Name': to_name}
 
             if recipient_vars.get(addr):
@@ -109,16 +109,15 @@ class MailjetBackend(BaseEmailBackend):
         msg_dict['FromEmail'] = from_email
         msg_dict['FromName'] = from_name
 
-        # msg_dict['To'] = message.to
-        msg_dict['Recipients'] = self._parse_recipients(message, message.to)
+        msg_dict['To'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.to])
 
-        if hasattr(message, 'cc'):
-            msg_dict['Cc'] = message.cc
+        if message.cc:
+            msg_dict['Cc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.cc])
 
-        if hasattr(message, 'bcc'):
-            msg_dict['bcc'] = message.bcc
+        if message.bcc:
+            msg_dict['Bcc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.bcc])
 
-        if hasattr(message, 'reply_to'):
+        if message.reply_to:
             reply_to = [sanitize_address(addr, message.encoding) for addr in message.reply_to]
             msg_dict['Headers'] = {'Reply-To': ', '.join(reply_to)}
 
