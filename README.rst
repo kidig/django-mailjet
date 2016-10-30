@@ -1,7 +1,7 @@
 ==============
 Django-Mailjet
 ==============
-A Django email backend for use with Mailjet - https://www.mailjet.com/
+Un-official Django email backend for use with Mailjet - https://www.mailjet.com/
 
 Overview
 ========
