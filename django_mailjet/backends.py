@@ -114,8 +114,8 @@ class MailjetBackend(BaseEmailBackend):
         msg_dict['FromEmail'] = from_email
         msg_dict['FromName'] = from_name
 
-        # Place email recipients into To field, unless Cc or Bcc are used, in
-        # that case, place recipients into Receipients. According to Mailjet:
+        # Place email recipients into Recipients field, unless Cc or Bcc are
+        # used, in that case, place recipients into To. According to Mailjet:
         #
         # Important: Recipients and To have a different behaviors. The
         # recipients listed in To will recieve a common message showing every
