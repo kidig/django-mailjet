@@ -122,17 +122,20 @@ class MailjetBackend(BaseEmailBackend):
         # other recipients and carbon copies recipients. The recipients listed
         # in Recipients will each recieve an seperate message without showing
         # all the other recipients.
-        rcpt_key = 'Recipients'
+        use_recipients = True
 
         if message.cc:
             msg_dict['Cc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.cc])
-            rcpt_key = 'To'
+            use_recipients = False
 
         if message.bcc:
             msg_dict['Bcc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.bcc])
-            rcpt_key = 'To'
+            use_recipients = True
 
-        msg_dict[rcpt_key] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.to])
+        if use_recipients:
+            msg_dict['Recipients'] = self._parse_recipients(message, message.to)
+        else:
+            msg_dict['To'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.to])
 
         if message.reply_to:
             reply_to = [sanitize_address(addr, message.encoding) for addr in message.reply_to]
