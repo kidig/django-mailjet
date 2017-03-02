@@ -42,8 +42,13 @@ class MailjetBackend(BaseEmailBackend):
         recipient_vars = getattr(message, 'recipient_vars', {})
 
         for addr in recipients:
+            rcpt = {}
             to_name, to_email = parseaddr(sanitize_address(addr, message.encoding))
-            rcpt = {'Email': to_email, 'Name': to_name}
+
+            if to_name:
+                rcpt['Name'] = to_name
+            if to_email:
+                rcpt['Email'] = to_email
 
             if recipient_vars.get(addr):
                 rcpt['Vars'] = recipient_vars.get(addr)
@@ -71,7 +76,7 @@ class MailjetBackend(BaseEmailBackend):
         return True
 
     def build_send_payload(self, message):
-        msg_dict = self._build_standart_message_dict(message)
+        msg_dict = self._build_standard_message_dict(message)
         self._add_mailjet_options(message, msg_dict)
 
         if getattr(message, 'alternatives', None):
@@ -94,7 +99,7 @@ class MailjetBackend(BaseEmailBackend):
             raise MailjetAPIError("Invalid JSON in Mailjet API response",
                 email_message=message, payload=payload, response=response)
 
-    def _build_standart_message_dict(self, message):
+    def _build_standard_message_dict(self, message):
         msg_dict = dict()
 
         if len(message.subject):
@@ -109,13 +114,28 @@ class MailjetBackend(BaseEmailBackend):
         msg_dict['FromEmail'] = from_email
         msg_dict['FromName'] = from_name
 
-        msg_dict['To'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.to])
+        # Place email recipients into Recipients field, unless Cc or Bcc are
+        # used, in that case, place recipients into To. According to Mailjet:
+        #
+        # Important: Recipients and To have a different behaviors. The
+        # recipients listed in To will recieve a common message showing every
+        # other recipients and carbon copies recipients. The recipients listed
+        # in Recipients will each recieve an seperate message without showing
+        # all the other recipients.
+        use_recipients = True
 
         if message.cc:
             msg_dict['Cc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.cc])
+            use_recipients = False
 
         if message.bcc:
             msg_dict['Bcc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.bcc])
+            use_recipients = True
+
+        if use_recipients:
+            msg_dict['Recipients'] = self._parse_recipients(message, message.to)
+        else:
+            msg_dict['To'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.to])
 
         if message.reply_to:
             reply_to = [sanitize_address(addr, message.encoding) for addr in message.reply_to]
