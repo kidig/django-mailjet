@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import os
 import unittest
 
@@ -7,7 +5,7 @@ from django.core import mail
 from django.test import TestCase
 from django.test.utils import override_settings
 
-from django_mailjet import MailjetError, MailjetAPIError
+from django_mailjet import MailjetAPIError
 
 
 MAILJET_TEST_API_KEY = os.getenv('MAILJET_TEST_API_KEY')
@@ -15,9 +13,9 @@ MAILJET_TEST_API_SECRET = os.getenv('MAILJET_TEST_API_SECRET')
 
 
 @unittest.skipUnless(MAILJET_TEST_API_KEY,
-            "Set MAILJET_TEST_API_KEY environment variable to run integration tests")
+                     "Set MAILJET_TEST_API_KEY environment variable to run integration tests")
 @unittest.skipUnless(MAILJET_TEST_API_SECRET,
-            "Set MAILJET_TEST_API_SECRET environment variable to run integration tests")
+                     "Set MAILJET_TEST_API_SECRET environment variable to run integration tests")
 @override_settings(MAILJET_API_KEY=MAILJET_TEST_API_KEY,
                    MAILJET_API_SECRET=MAILJET_TEST_API_SECRET,
                    EMAIL_BACKEND="django_mailjet.backends.MailjetBackend")
@@ -36,9 +34,9 @@ class DjrillIntegrationTests(TestCase):
             'Subject', 'Text content', 'from@example.com', ['to@example.com'])
         self.message.attach_alternative('<p>HTML content</p>', "text/html")
 
-    def test_send_mail(self):
+    def test_send_mail(self):  # TODO: Fix me
         # Example of getting the Mailjet send status
-        self.assertEqual(sent_count, 1)
+        self.assertEqual(sent_count, 1)  # noqa: F821
         # noinspection PyUnresolvedReferences
         response = self.message.mailjet_response
 

@@ -3,7 +3,11 @@
 # python runtests.py
 
 import sys
+
+from django import setup
 from django.conf import settings
+from django.test.runner import DiscoverRunner as TestRunner
+
 
 APP = 'django_mailjet'
 
@@ -37,23 +41,14 @@ settings.configure(
     ],
 )
 
-try:
-    # Django 1.7+ initialize app registry
-    from django import setup
-    setup()
-except ImportError:
-    pass
-
-try:
-    from django.test.runner import DiscoverRunner as TestRunner  # Django 1.6+
-except ImportError:
-    from django.test.simple import DjangoTestSuiteRunner as TestRunner  # Django -1.5
+setup()
 
 
 def runtests():
     test_runner = TestRunner(verbosity=1)
     failures = test_runner.run_tests([APP])
     sys.exit(failures)
+
 
 if __name__ == '__main__':
     runtests()
