@@ -55,7 +55,7 @@ setup(
     license='MIT',
     packages=['django_mailjet'],
     install_requires=[
-        "mailjet_rest",
+        "mailjet_rest>=1.3,<1.4",
         "django>=1.8",
     ],
     include_package_data=True,
