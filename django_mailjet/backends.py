@@ -1,15 +1,15 @@
-
 import mimetypes
+
 from base64 import b64encode
 from email.mime.base import MIMEBase
 from email.utils import parseaddr
-from mailjet_rest import Client
-
 
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.core.mail.backends.base import BaseEmailBackend
 from django.core.mail.message import sanitize_address, DEFAULT_ATTACHMENT_MIME_TYPE
+
+from mailjet_rest import Client
 
 from .exceptions import MailjetError, MailjetAPIError
 
@@ -61,7 +61,6 @@ class MailjetBackend(BaseEmailBackend):
         if not message.recipients():
             return False
 
-
         try:
             payload = self.build_send_payload(message)
             response = self.post_to_mailjet(payload, message)
@@ -97,7 +96,7 @@ class MailjetBackend(BaseEmailBackend):
             return response.json()
         except ValueError:
             raise MailjetAPIError("Invalid JSON in Mailjet API response",
-                email_message=message, payload=payload, response=response)
+                                  email_message=message, payload=payload, response=response)
 
     def _build_standard_message_dict(self, message):
         msg_dict = dict()
