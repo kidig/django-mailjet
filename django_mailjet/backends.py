@@ -129,7 +129,7 @@ class MailjetBackend(BaseEmailBackend):
 
         if message.bcc:
             msg_dict['Bcc'] = ', '.join([sanitize_address(addr, message.encoding) for addr in message.bcc])
-            use_recipients = True
+            use_recipients = False
 
         if use_recipients:
             msg_dict['Recipients'] = self._parse_recipients(message, message.to)
