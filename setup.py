@@ -55,11 +55,8 @@ setup(
     license='MIT',
     packages=['django_mailjet'],
     install_requires=[
-        "mailjet_rest",
+        "mailjet_rest>=1.3,<1.4",
         "django>=1.8",
-    ],
-    dependency_links=[
-        "git+ssh://git@github.com/kidig/mailjet-apiv3-python@bb52d9ed4bc18af3e3a4d5e38643b173e87468ce#egg=mailjet_rest",
     ],
     include_package_data=True,
     tests_require=["mock", "six"],
