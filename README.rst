@@ -1,3 +1,5 @@
+*WARNING*: This project is currently UNMAINTAINED. Please use the official one: https://github.com/mailjet/mailjet-apiv3-python
+
 ==============
 Django-Mailjet
 ==============
